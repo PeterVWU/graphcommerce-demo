@@ -211,7 +211,7 @@ export const getStaticPaths: GetPageStaticPaths = async ({ locales = [] }) => {
   const path = (locale: string) => getProductStaticPaths(graphqlSsrClient(locale), locale)
   const paths = (await Promise.all(locales.map(path))).flat(1)
 
-  return { paths, fallback: 'blocking' }
+  return { paths: paths.slice(0, 10), fallback: 'blocking' }
 }
 
 export const getStaticProps: GetPageStaticProps = async ({ params, locale }) => {

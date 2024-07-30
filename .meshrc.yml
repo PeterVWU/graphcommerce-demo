@@ -23,6 +23,8 @@ sources:
     handler:
       graphql:
         endpoint: '{graphCommerce.magentoEndpoint}'
+        schemaHeaders:
+          Authorization: Basic dnVzYTpzYUJseUJQTGhHWm0=
         useGETForQueries: true
         batch: false
         operationHeaders:

@@ -1,0 +1,5 @@
+fragment NicotineWarningBanner on NicotineWarningBanner {
+  message {
+    raw
+  }
+}

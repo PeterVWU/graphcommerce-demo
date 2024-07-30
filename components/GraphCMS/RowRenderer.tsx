@@ -13,6 +13,7 @@ import { RowQuote } from './RowQuote/RowQuote'
 import { RowRendererFragment } from './RowRenderer.gql'
 import { RowServiceOptions } from './RowServiceOptions/RowServiceOptions'
 import { RowSpecialBanner } from './RowSpecialBanner/RowSpecialBanner'
+import { NicotineWarningBanner } from "./NicotineWarningBanner/NicotineWarningBanner";
 
 type ContentTypeRenderer = TypeRenderer<PageContentQueryFragment['pages'][0]['content'][0]>
 
@@ -29,6 +30,7 @@ const defaultRenderer: Partial<ContentTypeRenderer> = {
   RowContentLinks,
   RowProduct,
   RowLinks,
+  NicotineWarningBanner
 }
 
 export type PageProps = RowRendererFragment & {

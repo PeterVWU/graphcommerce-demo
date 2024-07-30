@@ -25,7 +25,7 @@ import {
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
-import { Divider, Fab } from '@mui/material'
+import { Divider, Fab, Container, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Footer } from './Footer'
@@ -37,7 +37,12 @@ export type LayoutNavigationProps = LayoutQuery &
 
 export function LayoutNavigation(props: LayoutNavigationProps) {
   const { footer, menu, children, ...uiProps } = props
-
+  const beforeHeader: React.ReactNode = (
+    <Container maxWidth={false} sx={{ border: '3px black solid' }}>
+      <Typography align='center' variant="h4">WARNING: This product contains nicotine. Nicotine is an addictive chemical.
+      </Typography>
+    </Container>
+  )
   const selection = useNavigationSelection()
   const router = useRouter()
 
@@ -117,6 +122,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
 
       <LayoutDefault
         {...uiProps}
+        beforeHeader={beforeHeader}
         noSticky={router.asPath.split('?')[0] === '/'}
         header={
           <>
