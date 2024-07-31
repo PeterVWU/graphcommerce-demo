@@ -16,7 +16,13 @@ import { i18nSsrLoader } from '../i18n/I18nProvider'
 
 import { setContext } from '@apollo/client/link/context';
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
+  // Check if we have a customer token passed from the client
+  console.log('headers', JSON.stringify(headers))
+  if (headers?.authorization?.startsWith('Bearer ')) {
+    // If a Bearer token is present, use it as is
+    return { headers }
+  }
   const username = 'vusa';
   const password = 'saBlyBPLhGZm';
   if (!username || !password) {
