@@ -1,0 +1,8 @@
+fragment RowHeroCarousel on RowHeroCarousel {
+    images{
+        ...Asset
+    },
+    pageLinks {
+        ...PageLink
+    }
+}

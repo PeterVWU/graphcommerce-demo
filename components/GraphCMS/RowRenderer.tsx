@@ -6,22 +6,19 @@ import { RowColumnOne } from './RowColumnOne/RowColumnOne'
 import { RowColumnThree } from './RowColumnThree/RowColumnThree'
 import { RowColumnTwo } from './RowColumnTwo/RowColumnTwo'
 import { RowContentLinks } from './RowContentLinks/RowContentLinks'
-import { RowHeroBanner } from './RowHeroBanner/RowHeroBanner'
 import { RowLinks } from './RowLinks/RowLinks'
 import { RowProduct } from './RowProduct/RowProduct'
 import { RowQuote } from './RowQuote/RowQuote'
 import { RowRendererFragment } from './RowRenderer.gql'
 import { RowServiceOptions } from './RowServiceOptions/RowServiceOptions'
 import { RowSpecialBanner } from './RowSpecialBanner/RowSpecialBanner'
-import { NicotineWarningBanner } from "./NicotineWarningBanner/NicotineWarningBanner";
-
+import { RowHeroCarousel } from "./RowHeroCarousel";
 type ContentTypeRenderer = TypeRenderer<PageContentQueryFragment['pages'][0]['content'][0]>
 
 const defaultRenderer: Partial<ContentTypeRenderer> = {
   RowColumnOne,
   RowColumnTwo,
   RowColumnThree,
-  RowHeroBanner,
   RowSpecialBanner,
   RowQuote,
   RowBlogContent,
@@ -30,7 +27,7 @@ const defaultRenderer: Partial<ContentTypeRenderer> = {
   RowContentLinks,
   RowProduct,
   RowLinks,
-  NicotineWarningBanner
+  RowHeroCarousel
 }
 
 export type PageProps = RowRendererFragment & {

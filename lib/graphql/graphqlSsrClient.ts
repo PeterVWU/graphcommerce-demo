@@ -13,16 +13,17 @@ import {
 import { MeshApolloLink, getBuiltMesh } from '@graphcommerce/graphql-mesh'
 import { storefrontConfig, storefrontConfigDefault } from '@graphcommerce/next-ui'
 import { i18nSsrLoader } from '../i18n/I18nProvider'
+import { print } from "graphql";
 
 import { setContext } from '@apollo/client/link/context';
 
 const authLink = setContext(async (_, { headers }) => {
   // Check if we have a customer token passed from the client
   console.log('headers', JSON.stringify(headers))
-  if (headers?.authorization?.startsWith('Bearer ')) {
-    // If a Bearer token is present, use it as is
-    return { headers }
-  }
+  // if (headers?.authorization?.startsWith('Bearer ')) {
+  //   // If a Bearer token is present, use it as is
+  //   return { headers }
+  // }
   const username = 'vusa';
   const password = 'saBlyBPLhGZm';
   if (!username || !password) {
@@ -40,18 +41,45 @@ const authLink = setContext(async (_, { headers }) => {
   }
 });
 
-// const loggingLink = new ApolloLink((operation, forward) => {
-//   console.log('GraphQL Request:', {
-//     operationName: operation.operationName,
-//     variables: operation.variables,
-//     headers: operation.getContext().headers,
-//     uri: operation.getContext().uri
-//   });
+const loggingLink = new ApolloLink((operation, forward) => {
+  console.log('GraphQL Request:', {
+    operationName: operation.operationName,
+    variables: operation.variables,
+    query: print(operation.query),
+    headers: operation.getContext().headers, // Access headers from context
+    uri: operation.getContext()
+  });
 
-//   return forward(operation).map((response) => {
-//     console.log(`GraphQL Response for ${operation.operationName}:`, response);
-//     return response;
-//   });
+  return forward(operation).map((response) => {
+    const updatedContext = operation.getContext();
+    console.log(`GraphQL URL: ${updatedContext.uri || 'Not available'}`);
+    console.log(`GraphQL Response for ${operation.operationName}:`, {
+      data: response?.data,
+      errors: response?.errors,
+      extensions: response?.extensions,
+      // networkStatus: response?.networkStatus
+    });
+    return response;
+  });
+});
+
+
+// const forcePostForLargeQueriesLink = new ApolloLink((operation, forward) => {
+//   const context = operation.getContext();
+//   const querySize = print(operation.query).length;
+//   console.log('querySize', querySize)
+
+//   if (querySize > 2000) { // Adjust this threshold as needed
+//     operation.setContext({
+//       ...context,
+//       fetchOptions: {
+//         ...context.fetchOptions,
+//         method: 'POST',
+//       },
+//     });
+//   }
+
+//   return forward(operation);
 // });
 
 function client(locale: string | undefined, fetchPolicy: FetchPolicy = 'no-cache') {
@@ -61,7 +89,9 @@ function client(locale: string | undefined, fetchPolicy: FetchPolicy = 'no-cache
 
   return new ApolloClient({
     link: ApolloLink.from([
+      loggingLink,
       authLink,
+      // forcePostForLargeQueriesLink,
       measurePerformanceLink,
       errorLink,
       ...config.links,
