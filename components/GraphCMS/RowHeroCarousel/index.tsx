@@ -29,7 +29,11 @@ export function RowHeroCarousel(props: RowHeroCarouselFragment) {
     };
 
     return (
-        <Container sx={{ position: 'relative' }}>
+        <Container sx={(theme) => ({
+            position: 'relative',
+            overflow: 'hidden',
+            marginBottom: theme.spacings.md
+        })}>
             <AutoPlaySwipeableViews
                 axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                 index={activeStep}
