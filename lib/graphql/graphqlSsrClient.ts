@@ -45,9 +45,8 @@ const loggingLink = new ApolloLink((operation, forward) => {
   console.log('GraphQL Request:', {
     operationName: operation.operationName,
     variables: operation.variables,
-    query: print(operation.query),
     headers: operation.getContext().headers, // Access headers from context
-    uri: operation.getContext()
+    uri: operation.getContext().uri
   });
 
   return forward(operation).map((response) => {
@@ -90,8 +89,6 @@ function client(locale: string | undefined, fetchPolicy: FetchPolicy = 'no-cache
   return new ApolloClient({
     link: ApolloLink.from([
       loggingLink,
-      authLink,
-      // forcePostForLargeQueriesLink,
       measurePerformanceLink,
       errorLink,
       ...config.links,

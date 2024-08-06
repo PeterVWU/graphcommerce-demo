@@ -13,20 +13,20 @@ import {
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
 
 type Props = HygraphPagesQuery & {
-  latestList: ProductListQuery
-  favoritesList: ProductListQuery
-  swipableList: ProductListQuery
+  onSaleList: ProductListQuery
+  newArrivalList: ProductListQuery
+  disposablesList: ProductListQuery
 }
 type RouteProps = { url: string }
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props, RouteProps>
 
 function CmsPage(props: Props) {
-  const { pages, latestList, favoritesList, swipableList } = props
+  const { pages, onSaleList, newArrivalList, disposablesList } = props
   const page = pages?.[0]
 
-  const latest = latestList?.products?.items?.[0]
-  const favorite = favoritesList?.products?.items?.[0]
-  const swipable = swipableList?.products?.items?.[0]
+  const onSale = onSaleList?.products?.items?.[0]
+  const favorite = newArrivalList?.products?.items?.[0]
+  const disposables = disposablesList?.products?.items?.[0]
 
   return (
     <>
@@ -46,18 +46,18 @@ function CmsPage(props: Props) {
             RowProduct: (rowProps) => {
               const { identity } = rowProps
 
-              if (identity === 'home-favorites')
+              if (identity === 'home-new')
                 return (
-                  <RowProduct {...rowProps} {...favorite} items={favoritesList.products?.items} />
+                  <RowProduct {...rowProps} {...favorite} items={newArrivalList.products?.items} />
                 )
-              if (identity === 'home-latest')
-                return <RowProduct {...rowProps} {...latest} items={latestList.products?.items} />
-              if (identity === 'home-swipable')
+              if (identity === 'home-sale')
+                return <RowProduct {...rowProps} {...onSale} items={onSaleList.products?.items} />
+              if (identity === 'home-disposables')
                 return (
-                  <RowProduct {...rowProps} {...swipable} items={swipableList.products?.items} />
+                  <RowProduct {...rowProps} {...disposables} items={disposablesList.products?.items} />
                 )
               return (
-                <RowProduct {...rowProps} {...favorite} items={favoritesList.products?.items} />
+                <RowProduct {...rowProps} {...favorite} items={newArrivalList.products?.items} />
               )
             },
           }}
@@ -82,17 +82,17 @@ export const getStaticProps: GetPageStaticProps = async ({ locale }) => {
   const layout = staticClient.query({ query: LayoutDocument, fetchPolicy: 'cache-first' })
 
   // todo(paales): Remove when https://github.com/Urigo/graphql-mesh/issues/1257 is resolved
-  const favoritesList = staticClient.query({
+  const newArrivalList = staticClient.query({
     query: ProductListDocument,
     variables: { pageSize: 8, filters: { category_uid: { eq: 'NjM=' } } },
   })
 
-  const latestList = staticClient.query({
+  const onSaleList = staticClient.query({
     query: ProductListDocument,
     variables: { pageSize: 8, filters: { category_uid: { eq: 'NjQ=' } } },
   })
 
-  const swipableList = staticClient.query({
+  const disposablesList = staticClient.query({
     query: ProductListDocument,
     variables: { pageSize: 8, filters: { category_uid: { eq: 'Mw==' } } },
   })
@@ -103,9 +103,9 @@ export const getStaticProps: GetPageStaticProps = async ({ locale }) => {
     props: {
       ...(await page).data,
       ...(await layout).data,
-      latestList: (await latestList).data,
-      favoritesList: (await favoritesList).data,
-      swipableList: (await swipableList).data,
+      onSaleList: (await onSaleList).data,
+      newArrivalList: (await newArrivalList).data,
+      disposablesList: (await disposablesList).data,
       apolloState: await conf.then(() => client.cache.extract()),
     },
     revalidate: 60 * 20,

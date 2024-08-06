@@ -129,11 +129,25 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
         header={
           <>
             <Logo />
+            {/* Categories that have children show sub menu */}
             <DesktopNavBar>
-              {menu?.items?.[0]?.children?.slice(0, 2).map((item) => (
-                <DesktopNavItem key={item?.uid} href={`/${item?.url_path}`}>
-                  {item?.name}
-                </DesktopNavItem>
+              {menu?.items?.[0]?.children?.map((item) => (
+                item?.children && item?.children?.length > 1 ?
+                  <DesktopNavItem
+                    onClick={() => selection.set([item?.uid || ''])}
+                    onKeyUp={(evt) => {
+                      if (evt.key === 'Enter') {
+                        selection.set([item?.uid || ''])
+                      }
+                    }}
+                    tabIndex={0}
+                  >
+                    {item?.name}
+                    <IconSvg src={iconChevronDown} />
+                  </DesktopNavItem> :
+                  <DesktopNavItem key={item?.uid} href={`/${item?.url_path}`}>
+                    {item?.name}
+                  </DesktopNavItem>
               ))}
 
               {/* <DesktopNavItem
