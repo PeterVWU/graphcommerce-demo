@@ -31,6 +31,7 @@ import { useState } from 'react'
 import { Footer } from './Footer'
 import { LayoutQuery } from './Layout.gql'
 import { Logo } from './Logo'
+import { AgeVerificationModal } from '../AgeVerificationModal'
 
 export type LayoutNavigationProps = LayoutQuery &
   Omit<LayoutDefaultProps, 'footer' | 'header' | 'cartFab' | 'menuFab'>
@@ -39,7 +40,8 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
   const { footer, menu, children, ...uiProps } = props
   const beforeHeader: React.ReactNode = (
     <Container maxWidth={false} sx={{ border: '3px black solid' }}>
-      <Typography align='center' variant="h4">WARNING: This product contains nicotine. Nicotine is an addictive chemical.
+      <Typography align='center' variant='h4'>
+        WARNING: This product contains nicotine. Nicotine is an addictive chemical.
       </Typography>
     </Container>
   )
@@ -179,6 +181,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
         cartFab={<CartFab />}
         menuFab={<NavigationFab onClick={() => selection.set([])} />}
       >
+        <AgeVerificationModal></AgeVerificationModal>
         {children}
       </LayoutDefault>
     </>
