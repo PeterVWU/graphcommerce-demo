@@ -25,7 +25,7 @@ import {
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
-import { Divider, Fab, Container, Typography } from '@mui/material'
+import { Divider, Fab, Container, Typography, Box } from '@mui/material'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { Footer } from './Footer'
@@ -128,12 +128,16 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
         noSticky={router.asPath.split('?')[0] === '/'}
         header={
           <>
-            <Logo />
+            <Box display='flex' alignItems='center' flexDirection='row' gap={1}>
+              <Logo />
+              <Typography variant='h2'>VapeWholeSaleUSA</Typography>
+            </Box>
             {/* Categories that have children show sub menu */}
             <DesktopNavBar>
-              {menu?.items?.[0]?.children?.map((item) => (
-                item?.children && item?.children?.length > 1 ?
+              {menu?.items?.[0]?.children?.map((item) =>
+                item?.children && item?.children?.length > 1 ? (
                   <DesktopNavItem
+                    key={item?.uid}
                     onClick={() => selection.set([item?.uid || ''])}
                     onKeyUp={(evt) => {
                       if (evt.key === 'Enter') {
@@ -144,11 +148,13 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                   >
                     {item?.name}
                     <IconSvg src={iconChevronDown} />
-                  </DesktopNavItem> :
+                  </DesktopNavItem>
+                ) : (
                   <DesktopNavItem key={item?.uid} href={`/${item?.url_path}`}>
                     {item?.name}
                   </DesktopNavItem>
-              ))}
+                ),
+              )}
 
               {/* <DesktopNavItem
                 onClick={() => selection.set([menu?.items?.[0]?.uid || ''])}
@@ -167,7 +173,6 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 <Trans id='Blog' />
               </DesktopNavItem> */}
             </DesktopNavBar>
-
             <DesktopNavActions>
               {!router.pathname.startsWith('/search') && (
                 <SearchLink

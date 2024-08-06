@@ -41,7 +41,7 @@ export function LayoutFull(props: LayoutFullProps) {
       header={
         <>
           <Logo />
-          {/* <DesktopNavBar>
+          <DesktopNavBar>
             {menuItemsIncludeInMenu?.map((item) => {
               const highLight = item?.name?.toLowerCase().includes('sale')
                 ? { textTransform: 'uppercase', letterSpacing: 0.3, color: 'primary.main' }
@@ -55,8 +55,8 @@ export function LayoutFull(props: LayoutFullProps) {
             <DesktopNavItem href='/blog'>
               <Trans id='Blog' />
             </DesktopNavItem>
-          </DesktopNavBar> */}
-          {/* <DesktopNavActions>
+          </DesktopNavBar>
+          <DesktopNavActions>
             {!router.pathname.startsWith('/search') && (
               <SearchLink href='/search' aria-label={i18n._(/* i18n */ 'Search...')} />
             )}
@@ -72,7 +72,7 @@ export function LayoutFull(props: LayoutFullProps) {
             <CustomerFab guestHref='/account/signin' authHref='/account' />
             {/* The placeholder exists because the CartFab is sticky but we want to reserve the space for the <CartFab /> */}
             <PlaceholderFab />
-          </DesktopNavActions> */}
+          </DesktopNavActions>
         </>
       }
       footer={<Footer footer={footer} />}
