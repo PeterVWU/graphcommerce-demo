@@ -31,7 +31,7 @@ export function Footer(props: FooterProps) {
           )}
         </IconButton>
       ))}
-      storeSwitcher={<StoreSwitcherButton />}
+      // storeSwitcher={<StoreSwitcherButton />}
       customerService={
         <Button href='/service' variant='pill'>
           <Trans id='Customer Service' />
